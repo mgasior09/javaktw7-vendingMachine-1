@@ -41,4 +41,40 @@ public class VendingMachineTest {
         assertEquals((Long) 14L, testedMachine.rowsSize());
     }
 
+    // w adnotacji Test definiujemy, jaki wyjątek powinien zostać wyrzucony.
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldThrowExceptionWhenThereAreTooManyRows() {
+        // given
+        // towrzymy sztuczną konfigurację
+        Configuration mockedConfig = mock(Configuration.class);
+        // definiujemy zwracane przez konfigurację wartości
+        when(mockedConfig.getProperty(eq(PARAM_NAME_COLS), anyLong()))
+                .thenReturn(8L);
+        // maksymalną poprawną wartością dla ilości wierszy jest 26. Ta konfiguracja zwróci zbyt dużą ilość wierszy.
+        when(mockedConfig.getProperty(eq(PARAM_NAME_ROWS), anyLong()))
+                .thenReturn(27L);
+
+        // when
+        // testujemy tylko to, czy uda się utworzyć automat
+        new VendingMachine(mockedConfig);
+    }
+
+    // w adnotacji Test definiujemy, jaki wyjątek powinien zostać wyrzucony.
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldThrowExceptionWhenThereAreTooFewRows() {
+        // given
+        // towrzymy sztuczną konfigurację
+        Configuration mockedConfig = mock(Configuration.class);
+        // definiujemy zwracane przez konfigurację wartości
+        when(mockedConfig.getProperty(eq(PARAM_NAME_COLS), anyLong()))
+                .thenReturn(8L);
+        // minimalną poprawną wartością dla ilości wierszy jest 1. Ta konfiguracja zwróci zbyt dużą ilość wierszy.
+        when(mockedConfig.getProperty(eq(PARAM_NAME_ROWS), anyLong()))
+                .thenReturn(0L);
+
+        // when
+        // testujemy tylko to, czy uda się utworzyć automat
+        new VendingMachine(mockedConfig);
+    }
+
 }
