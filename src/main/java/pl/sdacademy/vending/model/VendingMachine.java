@@ -15,6 +15,6 @@ public class VendingMachine {
     }
 
     public Long colsSize() {
-        return configuration.getProperty("machine.size.cols", 4L)
+        return configuration.getProperty("machine.size.cols", 4L);
     }
 }
