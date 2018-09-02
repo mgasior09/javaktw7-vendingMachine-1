@@ -4,6 +4,10 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+/**
+ * Testy w tej klasie nie korzystają z pliku application.properties znajdującego się w src/main/java, a z pliku, który
+ * zapisaliśmy w src/test/java. To w tej lokalizacji znajdują się parametry testowane przez tę klasę.
+ */
 public class PropertiesFileConfigurationTest {
 
     @Test
