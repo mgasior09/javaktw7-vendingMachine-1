@@ -9,7 +9,7 @@ public class ConfigurationTest {
     @Test
     public void shouldReturnTextPropertyFromConfiguration() {
         // given
-        Configuration configuration = new Configuration();
+        Configuration configuration = Configuration.getInstance();
         String propertyName = "property.text.value";
 
         // when
@@ -22,7 +22,7 @@ public class ConfigurationTest {
     @Test
     public void shouldReturnLongPropertyFromConfiguration() {
         // given
-        Configuration configuration = new Configuration();
+        Configuration configuration = Configuration.getInstance();
         String propertyName = "property.long.value";
 
         // when
@@ -36,7 +36,7 @@ public class ConfigurationTest {
     @Test
     public void shouldReturnDefaultValueWhenTextPropertyDoesNotExist() {
         // given
-        Configuration configuration = new Configuration();
+        Configuration configuration = Configuration.getInstance();
         String propertyName = "notExistingProperty";
         String defaultValue = "I'm default";
 
@@ -50,7 +50,7 @@ public class ConfigurationTest {
     @Test
     public void shouldReturnDefaultValueWhenLongPropertyDoesNotExist() {
         // given
-        Configuration configuration = new Configuration();
+        Configuration configuration = Configuration.getInstance();
         String propertyName = "notExistingProperty";
         Long defaultValue = 555L;
 

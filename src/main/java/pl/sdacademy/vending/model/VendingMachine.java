@@ -7,7 +7,7 @@ public class VendingMachine {
     private final Configuration configuration;
 
     public VendingMachine() {
-        configuration = new Configuration();
+        configuration = Configuration.getInstance();
     }
 
     public Long rowsSize() {
