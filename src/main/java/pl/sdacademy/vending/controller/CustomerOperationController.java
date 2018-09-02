@@ -12,33 +12,33 @@ public class CustomerOperationController {
     public void printMachine() {
         for (int row = 0; row < machine.rowsSize(); row++) {
             for (int col = 0; col < machine.colsSize(); col++) {
-                System.out.print("+--------+");
+                printUpperBoundaryForCell(row, col);
             }
             System.out.println();
 
             for (int col = 0; col < machine.colsSize(); col++) {
-                char rowSymbol = (char) ('A' + row);
-                int colSymbol = col + 1;
-                System.out.print("|   " + rowSymbol + colSymbol + "   |");
+                printSymbolForCell(row, col);
             }
             System.out.println();
 
             for (int col = 0; col < machine.colsSize(); col++) {
-                System.out.print("+--------+");
+                printLowerBoundaryForCell(row, col);
             }
             System.out.println();
         }
-        /*
-        dla każdego wiersza wyświetlić:
-            dla każdej z kolumn, wyświetl:
-                - górna część (+---+)
-                    +---++---++---++---+
-            dla każdej z kolumn, wyświetl:
-                - boki oraz numer
-                    | A1|| A2|| A3|| A4|
-            dla każdej z kolumn, wyświetl:
-                - dolną część (+---+)
-                    +---++---++---++---+
-         */
+    }
+
+    private void printUpperBoundaryForCell(int row, int col) {
+        System.out.print("+--------+");
+    }
+
+    private void printSymbolForCell(int row, int col) {
+        char rowSymbol = (char) ('A' + row);
+        int colSymbol = col + 1;
+        System.out.print("|   " + rowSymbol + colSymbol + "   |");
+    }
+
+    private void printLowerBoundaryForCell(int row, int col) {
+        System.out.print("+--------+");
     }
 }
