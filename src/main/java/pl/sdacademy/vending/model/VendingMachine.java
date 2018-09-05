@@ -17,7 +17,8 @@ public class VendingMachine {
      * czasie przez inne metody klasy {@link VendingMachine}. {@link Configuration} jest wymaganą przez VendingMachine
      * ZALEŻNOśCIĄ, więc zostanie przekazana do niej za pomocą konstruktora przez klasę {@link pl.sdacademy.vending.Application}
      */
-    private final Configuration configuration;
+    private final Long maxRowsSize;
+    private final Long maxColsSize;
 
     /**
      * Konstruktor, który umożliwia przekazanie używanej klasy konfiguracji. Podczas normalnego działania aplikacji będzie
@@ -25,7 +26,15 @@ public class VendingMachine {
      * @param configuration obiekt zawierający używaną konfigurację.
      */
     public VendingMachine(Configuration configuration) {
-        this.configuration = configuration;
+        // tekst "machine.size.rows" jest kluczem, pod którym powinna być zapisana maksymalna ilość wierszy tego automatu
+        maxRowsSize = configuration.getProperty("machine.size.rows", 6L);
+        if (maxRowsSize < 1 || maxRowsSize > 26) {
+            throw new IllegalArgumentException("VendingMachine can not be created with " + maxRowsSize + " rows");
+        }
+        maxColsSize = configuration.getProperty("machine.size.cols", 4L);
+        if (maxColsSize < 1 || maxColsSize > 9) {
+            throw new IllegalArgumentException("VendingMachine can not be created with " + maxColsSize + " cols");
+        }
     }
 
     /**
@@ -34,8 +43,7 @@ public class VendingMachine {
      * @return ilość wieszy w automacie pobrana z konfiguracji lub domyślna wartość 6.
      */
     public Long rowsSize() {
-        // tekst "machine.size.rows" jest kluczem, pod którym powinna być zapisana maksymalna ilość wierszy tego automatu
-        return configuration.getProperty("machine.size.rows", 6L);
+        return maxRowsSize;
     }
 
 
@@ -46,6 +54,6 @@ public class VendingMachine {
      */
     public Long colsSize() {
         // pod kluczem "machine.size.cols" jest zapisana maksymalna ilość kolumn automatu.
-        return configuration.getProperty("machine.size.cols", 4L);
+        return maxColsSize;
     }
 }

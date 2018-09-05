@@ -77,4 +77,34 @@ public class VendingMachineTest {
         new VendingMachine(mockedConfig);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldThrowExceptionWhenThereAreTooManyCols() {
+        // given
+        Configuration mockedConfig = mock(Configuration.class);
+        // 10 jest pierwsza niepoprawna wartoscia
+        when(mockedConfig.getProperty(eq(PARAM_NAME_COLS), anyLong()))
+                .thenReturn(10L);
+        when(mockedConfig.getProperty(eq(PARAM_NAME_ROWS), anyLong()))
+                .thenReturn(16L);
+
+        // when
+        // testujemy tylko to, czy uda się utworzyć automat
+        new VendingMachine(mockedConfig);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldThrowExceptionWhenThereAreTooFewCols() {
+        // given
+        Configuration mockedConfig = mock(Configuration.class);
+        // nie mozna utowrzyc automatu mniejszego niz 1
+        when(mockedConfig.getProperty(eq(PARAM_NAME_COLS), anyLong()))
+                .thenReturn(0L);
+        when(mockedConfig.getProperty(eq(PARAM_NAME_ROWS), anyLong()))
+                .thenReturn(21L);
+
+        // when
+        // testujemy tylko to, czy uda się utworzyć automat
+        new VendingMachine(mockedConfig);
+    }
+
 }
