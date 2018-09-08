@@ -1,9 +1,13 @@
 package pl.sdacademy.vending.util;
 
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import static org.junit.Assert.*;
 
+@RunWith(JUnitParamsRunner.class)
 public class StringUtilsTest {
 
     @Test
@@ -58,9 +62,24 @@ public class StringUtilsTest {
         assertEquals("   Ala  ", adjustedText);
     }
 
-    /*
-    - co jezeli przekaze dluzszy tekst niz oczekiwana dlugosc
-    - co jezeli przekaze za krotki tekst
+    @Test
+    @Parameters
+    public void shouldPropertyFormatNumberToCash(Long money, String expectedFormatOfMoney) {
+        String formattedMoney = StringUtils.formatMoney(money);
 
-     */
+        assertEquals(expectedFormatOfMoney, formattedMoney);
+    }
+
+    public Object[] parametersForShouldPropertyFormatNumberToCash() {
+        return new Object[] {
+                new Object[] {123L, "1,23"},
+                new Object[] {123456L, "1 234,56"},
+                new Object[] {1234567L, "12 345,67"},
+                new Object[] {12345678L, "123 456,78"},
+                new Object[] {1234567890123456789L, "12 345 678 901 234 567,89"},
+                new Object[] {12L, "0,12"},
+                new Object[] {3L, "0,03"},
+                new Object[] {0L, "0,00"}
+        };
+    }
 }

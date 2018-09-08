@@ -21,4 +21,31 @@ public class StringUtils {
         }
         return stringBuilder.toString();
     }
+
+    public static String formatMoney(Long money) {
+        return formatMoneyIntegrals(money) + "," + formatMoneyDecimals(money);
+    }
+
+    private static String formatMoneyIntegrals(Long money) {
+        String integrals = Long.toString(money / 100);
+        StringBuilder formattedIntegralsBuilder = new StringBuilder();
+        int spaceCounter = 0;
+        for (int charIndex = integrals.length() - 1; charIndex >= 0; charIndex--) {
+            formattedIntegralsBuilder = formattedIntegralsBuilder.append(integrals.charAt(charIndex));
+            spaceCounter++;
+            if (spaceCounter >= 3) {
+                formattedIntegralsBuilder = formattedIntegralsBuilder.append(" ");
+                spaceCounter = 0;
+            }
+        }
+        return formattedIntegralsBuilder.reverse().toString().trim();
+    }
+
+    private static String formatMoneyDecimals(Long money) {
+        String cents = Long.toString(money % 100);
+        if (cents.length() == 1) {
+            return "0" + cents;
+        }
+        return cents;
+    }
 }
