@@ -3,6 +3,7 @@ package pl.sdacademy.vending.model;
 import pl.sdacademy.vending.util.Configuration;
 
 import java.util.Optional;
+import java.util.Random;
 
 /**
  * Główna klasa automatu przechowująca jego stan oraz zachowania. Aktualnie jest bardzo "uboga" w zachowania, umożliwia
@@ -49,10 +50,48 @@ public class VendingMachine {
     }
 
     private Tray createTrayForPosition(int rowNumber, int colNumber) {
+        // 0.8 > stwórz tackę
+        // 0.2 < zwróć null (nie twórz tacki)
+        if (!shouldGenerateTray()) {
+            return null;
+        }
+
         char rowSymbol = (char) ('A' + rowNumber);
         int colSymbol = colNumber + 1;
         String symbol = "" + rowSymbol + colSymbol;
-        return Tray.builder(symbol).build();
+        int calculatedPrice = generateRandomPrice();
+        return Tray.builder(symbol).price(Long.valueOf(calculatedPrice)).build();
+    }
+
+    private boolean shouldGenerateTray() {
+        // true jeżeli tack powinna zostać wygenerowana
+        return Math.random() < 0.8;
+    }
+
+    private int generateRandomPrice() {
+        Random random = new Random();
+//        random.nextInt(100) -> 0 - 99
+        int generatedPrice = random.nextInt(401); // values from 0 to 400
+
+        /*
+        metoda PRICE oczekuje OBIEKTU Long
+        calcalutedPrice jest int
+        int -(A)-> long -(B)-> Long
+        Scenariusz 1: price((long) calculatedPrice)
+            A) (long) intValue
+            B) JVM sam rzutuje long na Long
+        Scenariusz 2: price(Long.valueOf(calculatedPrice))
+            A) JVM sam rzutuje int na long
+            B) sami dbamy o przekonwetowanie long na Long
+         */
+        /*
+        Inny sposób na generowanie losowej liczby
+        double Math.random()
+            double -> 0.0 do 1.0
+            (double * 400) -> 0.0 do 400.0
+            () + 100 -> 100.0 do 500.0
+         */
+        return generatedPrice + 100;
     }
 
     /**
