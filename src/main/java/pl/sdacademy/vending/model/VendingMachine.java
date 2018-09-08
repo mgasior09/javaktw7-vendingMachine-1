@@ -50,8 +50,6 @@ public class VendingMachine {
     }
 
     private Tray createTrayForPosition(int rowNumber, int colNumber) {
-        // 0.8 > stwórz tackę
-        // 0.2 < zwróć null (nie twórz tacki)
         if (!shouldGenerateTray()) {
             return null;
         }
@@ -60,7 +58,24 @@ public class VendingMachine {
         int colSymbol = colNumber + 1;
         String symbol = "" + rowSymbol + colSymbol;
         int calculatedPrice = generateRandomPrice();
-        return Tray.builder(symbol).price(Long.valueOf(calculatedPrice)).build();
+
+        double productProbability = Math.random();
+
+
+        Tray.Builder trayBuilder = Tray.builder(symbol)
+                .price(Long.valueOf(calculatedPrice));
+        if (productProbability < 0.5) {
+            // 1 product
+            Product product = new Product("Product " + symbol);
+            trayBuilder = trayBuilder.product(product);
+        }
+        if (productProbability < 0.1) {
+            // to jeszcze 1 produkt
+            Product product = new Product("Product " + symbol);
+            trayBuilder = trayBuilder.product(product);
+        }
+
+        return trayBuilder.build();
     }
 
     private boolean shouldGenerateTray() {
