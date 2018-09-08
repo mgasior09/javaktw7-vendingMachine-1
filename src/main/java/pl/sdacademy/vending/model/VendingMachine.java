@@ -2,6 +2,8 @@ package pl.sdacademy.vending.model;
 
 import pl.sdacademy.vending.util.Configuration;
 
+import java.util.Optional;
+
 /**
  * Główna klasa automatu przechowująca jego stan oraz zachowania. Aktualnie jest bardzo "uboga" w zachowania, umożliwia
  * jedynie pobranie wielkości automatu, jednak z czasem będzie zawierała co raz więcej metod. Klasa {@link VendingMachine}
@@ -38,6 +40,19 @@ public class VendingMachine {
         }
         trays = new Tray[maxRowsSize.intValue()][maxColsSize.intValue()];
 
+        for (int rowNumber = 0; rowNumber < maxRowsSize; rowNumber++) {
+            for (int colNumber = 0; colNumber < maxColsSize; colNumber++) {
+                trays[rowNumber][colNumber] =
+                        createTrayForPosition(rowNumber, colNumber);
+            }
+        }
+    }
+
+    private Tray createTrayForPosition(int rowNumber, int colNumber) {
+        char rowSymbol = (char) ('A' + rowNumber);
+        int colSymbol = colNumber + 1;
+        String symbol = "" + rowSymbol + colSymbol;
+        return new Tray(symbol);
     }
 
     /**
@@ -58,5 +73,11 @@ public class VendingMachine {
     public Long colsSize() {
         // pod kluczem "machine.size.cols" jest zapisana maksymalna ilość kolumn automatu.
         return maxColsSize;
+    }
+
+    public Optional<Tray> trayDetailsAtPosition(int rowNumber, int colNumber) {
+        Tray obtainedTray = trays[rowNumber][colNumber];
+        Optional<Tray> tray = Optional.ofNullable(obtainedTray);
+        return tray;
     }
 }

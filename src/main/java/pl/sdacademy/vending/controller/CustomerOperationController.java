@@ -1,6 +1,9 @@
 package pl.sdacademy.vending.controller;
 
+import pl.sdacademy.vending.model.Tray;
 import pl.sdacademy.vending.model.VendingMachine;
+
+import java.util.Optional;
 
 /**
  * Klasa, będąca reprezentacją górnej warstwy architektury. Odpowiada za obsługę interakcji z użytkownikiem – obiera od
@@ -93,18 +96,12 @@ public class CustomerOperationController {
      * @param col numer kolumny, z którego komórka powinna zostać wyświetlona
      */
     private void printSymbolForCell(int row, int col) {
-        // jeżeli spojrzymy na tablicę ASCII, to zauważymy, że duże litery mają przypisane kolejne numery. Numery te są
-        // skojarzone z typem "char" - np. litera A ma wartość 65, a litera B wartość 66. Jeżeli do litery 'A' (a więc
-        // wartości 65, dodamy 0 (zero, czyli numer pierwszego wiesza), to otrzymamy ponownie wartość 65, którą rzutując
-        // na typ char zamieniamy ponownie na literę 'A'. Jeżeli numerem wiersza jest 1 (przy indeksowaniu od zera jest
-        // to drugi wiersz), to do wartości 'A' (czyli 65) dodajemy 1, otrzymując liczbę 66, czyli znak 'B' po konwersji
-        // na char. Ten znak drukujemy później na ekran
-        char rowSymbol = (char) ('A' + row);
-        // prosta konwersja numeru kolumny z indeksowanego od zera na indeksowany od jedynki.
-        int colSymbol = col + 1;
-        // poniższa linia wyświetla boku komórki, wyliczony symbol wiesza oraz wyliczony symbol komórki - otrzymany
-        // symbol jest czymś, po czym użytkownik będzie identyfikował daną komórkę.
-        System.out.print("|   " + rowSymbol + colSymbol + "   |");
+        Optional<Tray> tray = machine.trayDetailsAtPosition(row, col);
+        String symbol =
+                tray
+                        .map(Tray::getSymbol)
+                        .orElse("--");
+        System.out.print("|   " + symbol + "   |");
     }
 
     /**
