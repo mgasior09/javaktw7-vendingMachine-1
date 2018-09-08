@@ -62,16 +62,15 @@ public class VendingMachine {
         double productProbability = Math.random();
 
 
-        if (productProbability < 0.5) {
-            // 1 product
+        if (productProbability < 0.1) {
+            // 2 produkty
             return Tray.builder(symbol).price((long) calculatedPrice)
+                    .product(new Product("Product " + symbol))
                     .product(new Product("Product " + symbol))
                     .build();
-        } else if (productProbability < 0.1) {
-            // 2 produkty
-
+        } else if (productProbability < 0.5) {
+            // 1 product
             return Tray.builder(symbol).price((long) calculatedPrice)
-                    .product(new Product("Product " + symbol))
                     .product(new Product("Product " + symbol))
                     .build();
         }
