@@ -62,20 +62,23 @@ public class VendingMachine {
         double productProbability = Math.random();
 
 
-        Tray.Builder trayBuilder = Tray.builder(symbol)
-                .price(Long.valueOf(calculatedPrice));
         if (productProbability < 0.5) {
             // 1 product
-            Product product = new Product("Product " + symbol);
-            trayBuilder = trayBuilder.product(product);
-        }
-        if (productProbability < 0.1) {
-            // to jeszcze 1 produkt
-            Product product = new Product("Product " + symbol);
-            trayBuilder = trayBuilder.product(product);
+            return Tray.builder(symbol).price((long) calculatedPrice)
+                    .product(new Product("Product " + symbol))
+                    .build();
+        } else if (productProbability < 0.1) {
+            // 2 produkty
+
+            return Tray.builder(symbol).price((long) calculatedPrice)
+                    .product(new Product("Product " + symbol))
+                    .product(new Product("Product " + symbol))
+                    .build();
         }
 
-        return trayBuilder.build();
+        return Tray.builder(symbol)
+                .price(Long.valueOf(calculatedPrice))
+                .build();
     }
 
     private boolean shouldGenerateTray() {
