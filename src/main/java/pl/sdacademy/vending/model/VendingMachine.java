@@ -52,7 +52,7 @@ public class VendingMachine {
         char rowSymbol = (char) ('A' + rowNumber);
         int colSymbol = colNumber + 1;
         String symbol = "" + rowSymbol + colSymbol;
-        return new Tray(symbol);
+        return Tray.builder(symbol).build();
     }
 
     /**
