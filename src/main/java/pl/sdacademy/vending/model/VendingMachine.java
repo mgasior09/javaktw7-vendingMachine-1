@@ -19,6 +19,7 @@ public class VendingMachine {
      */
     private final Long maxRowsSize;
     private final Long maxColsSize;
+    private final Tray[][] trays;
 
     /**
      * Konstruktor, który umożliwia przekazanie używanej klasy konfiguracji. Podczas normalnego działania aplikacji będzie
@@ -35,6 +36,8 @@ public class VendingMachine {
         if (maxColsSize < 1 || maxColsSize > 9) {
             throw new IllegalArgumentException("VendingMachine can not be created with " + maxColsSize + " cols");
         }
+        trays = new Tray[maxRowsSize.intValue()][maxColsSize.intValue()];
+
     }
 
     /**
