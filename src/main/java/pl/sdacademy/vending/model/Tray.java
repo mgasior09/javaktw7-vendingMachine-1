@@ -52,6 +52,10 @@ public class Tray {
                 .map(Product::getName);
     }
 
+    public Optional<Product> getFirstProduct() {
+        return Optional.ofNullable(products.poll());
+    }
+
     public static class Builder {
         private String symbol;
         private Long price;
