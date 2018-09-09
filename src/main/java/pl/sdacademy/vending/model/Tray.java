@@ -1,6 +1,7 @@
 package pl.sdacademy.vending.model;
 
 import java.util.LinkedList;
+import java.util.Optional;
 import java.util.Queue;
 
 public class Tray {
@@ -24,6 +25,31 @@ public class Tray {
 
     public Long getPrice() {
         return price;
+    }
+
+    public Optional<String> firstProductName() {
+        Product firstProduct = products.peek();
+        /*
+        if (firstProduct == null) {
+            return "EMPTY";
+        } else {
+            String firstProductName = firstProduct.getName();
+            if (firstProductName == null) {
+                return "EMPTY";
+            } else {
+                return firstProductName;
+            }
+        }
+
+        Optional<Product> firstProduct1 = Optional.ofNullable(firstProduct);
+        Optional<String> s = Optional.ofNullable(firstProduct)
+                .map(Product::getName);
+        Optional<String> s2 = Optional.ofNullable(firstProduct)
+                .map((srodekPudelka) -> srodekPudelka.getName());
+*/
+
+        return Optional.ofNullable(firstProduct)
+                .map(Product::getName);
     }
 
     public static class Builder {

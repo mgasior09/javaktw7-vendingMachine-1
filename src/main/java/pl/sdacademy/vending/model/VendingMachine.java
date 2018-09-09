@@ -136,4 +136,15 @@ public class VendingMachine {
         Optional<Tray> tray = Optional.ofNullable(obtainedTray);
         return tray;
     }
+
+    public Optional<String> productNameAtPosition(int rowNumber, int colNumber) {
+        Tray tray = trays[rowNumber][colNumber];
+        if (tray != null) {
+            //tacka istnieje
+            return tray.firstProductName();
+        } else {
+            //tacka nie istnieje
+            return Optional.empty();
+        }
+    }
 }
