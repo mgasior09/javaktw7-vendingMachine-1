@@ -149,18 +149,6 @@ public class VendingMachine {
     }
 
     public Optional<Product> buyProductWithSymbol(String symbol) {
-        /*
-        1. pobierz pierwszy znak symboli i zapisz w zmiennej (metoda charAt)
-        2. pobierz drugi znak symboli i zapisz w zmiennej (metoda charAt)
-        3. Pierwszy znak przekonwertuj na numer wiersza (pierwszyZnak - 'A')
-        4. Drugi znam przekonwertuj na numer kolumny (drugiZnak - 1)
-        5. wywołaj metodę trayDetailsAtPosition (zwraca optional)
-        tray.isPresent()
-            -> true tray.get().getFirstProduct
-            -> false Optional.empty()
-        6. Zwróć produkt z tacki ***** (użyj metody .map oraz method reference)
-        UWAGA: co jeżeli użytkownik wpisze symbol małymi literami?
-         */
         Optional<Tray> trayForSymbol = getTrayForSymbol(symbol);
         if (trayForSymbol.isPresent()) {
             Tray tray = trayForSymbol.get();

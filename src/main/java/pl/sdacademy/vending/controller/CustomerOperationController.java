@@ -1,5 +1,6 @@
 package pl.sdacademy.vending.controller;
 
+import pl.sdacademy.vending.model.Product;
 import pl.sdacademy.vending.model.Tray;
 import pl.sdacademy.vending.model.VendingMachine;
 import pl.sdacademy.vending.util.StringUtils;
@@ -129,5 +130,9 @@ public class CustomerOperationController {
         System.out.print(
                 "+" + StringUtils.multiplyText("-", 12) + "+"
         );
+    }
+
+    public Optional<Product> buyProduct(String symbol) {
+        return machine.buyProductWithSymbol(symbol);
     }
 }
