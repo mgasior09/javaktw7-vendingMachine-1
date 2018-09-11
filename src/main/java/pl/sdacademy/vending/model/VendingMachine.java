@@ -2,7 +2,6 @@ package pl.sdacademy.vending.model;
 
 import pl.sdacademy.vending.util.Configuration;
 
-import java.util.Optional;
 import java.util.Random;
 
 /**
@@ -132,51 +131,48 @@ public class VendingMachine {
     }
 
     /**
-     * Zwraca obiekt {@link Tray} opakowany w {@link Optional} dla wskazanej pozycji. W przypadku, gdy pod wskazanym
-     * adresem nie ma tacki, zwraca pusty obiekt optional.
+     * Zwraca obiekt {@link Tray} dla wskazanej pozycji. W przypadku, gdy pod wskazanym
+     * adresem nie ma tacki, zwraca pusty obiekt.
      * @param rowNumber
      * @param colNumber
      * @return
      */
-    public Optional<Tray> trayDetailsAtPosition(int rowNumber, int colNumber) {
-        Tray obtainedTray = trays[rowNumber][colNumber];
-        Optional<Tray> tray = Optional.ofNullable(obtainedTray);
-        return tray;
+    public Tray trayDetailsAtPosition(int rowNumber, int colNumber) {
+        return trays[rowNumber][colNumber];
     }
 
     /**
      * Pobiera nazwę pierwszego produktu w tacce bez pobierania tego produktu. Zadanie pobrania nazwy produktu jest
-     * oddelegowane do klasy {@link Tray}, która zwraca nazwę produktu jako Optional. Takca może nie posiadać żadnego
-     * produktu, wtedy zwracany jest pusty obiekt optional. W przypadku braku tacki, również zwracany jest pusty optional.
+     * oddelegowane do klasy {@link Tray}. Takca może nie posiadać żadnego  produktu, wtedy zwracany jest pusty obiekt.
+     * W przypadku braku tacki, również zwracany jest placeholder braku produktu.
      * @param rowNumber
      * @param colNumber
      * @return
      */
-    public Optional<String> productNameAtPosition(int rowNumber, int colNumber) {
+    public String productNameAtPosition(int rowNumber, int colNumber) {
         Tray tray = trays[rowNumber][colNumber];
         if (tray != null) {
             //tacka istnieje
             return tray.firstProductName();
         } else {
             //tacka nie istnieje
-            return Optional.empty();
+            return "EMPTY";
         }
     }
 
     /**
      * Umożliwia pobranie produktu z automatu przez kupującego. Metoda ta aktualnie nie analizuje dostępnych funduszy oraz
      * ceny produktu. Zamiast tego zwraca pobrany produkt, jeżeli był dostępny. Jeżeli produkt nie był dostępny, to zwraca
-     * pusty obiekt optional.
+     * pusty obiekt.
      * @param symbol
      * @return
      */
-    public Optional<Product> buyProductWithSymbol(String symbol) {
-        Optional<Tray> trayForSymbol = getTrayForSymbol(symbol);
-        if (trayForSymbol.isPresent()) {
-            Tray tray = trayForSymbol.get();
-            return tray.getFirstProduct();
+    public Product buyProductWithSymbol(String symbol) {
+        Tray trayForSymbol = getTrayForSymbol(symbol);
+        if (trayForSymbol != null) {
+            return trayForSymbol.getFirstProduct();
         } else {
-            return Optional.empty();
+            return null;
         }
     }
 
@@ -191,7 +187,7 @@ public class VendingMachine {
      * @param symbol
      * @return
      */
-    private Optional<Tray> getTrayForSymbol(String symbol) {
+    private Tray getTrayForSymbol(String symbol) {
         char rowSymbol = symbol.toUpperCase().charAt(0);
         char colSymbol = symbol.charAt(1);
         int rowNumber = rowSymbol - 'A';

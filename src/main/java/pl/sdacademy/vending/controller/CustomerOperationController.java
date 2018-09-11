@@ -5,8 +5,6 @@ import pl.sdacademy.vending.model.Tray;
 import pl.sdacademy.vending.model.VendingMachine;
 import pl.sdacademy.vending.util.StringUtils;
 
-import java.util.Optional;
-
 /**
  * Klasa, będąca reprezentacją górnej warstwy architektury. Odpowiada za obsługę interakcji z użytkownikiem – obiera od
  * warstwy prezentacji żądania użytkownika i wywołuje określone informacje. W naszej aplikacji będzie odpowiedzialna za
@@ -110,47 +108,46 @@ public class CustomerOperationController {
      * @param col numer kolumny, z którego komórka powinna zostać wyświetlona
      */
     private void printSymbolForCell(int row, int col) {
-        Optional<Tray> tray = machine.trayDetailsAtPosition(row, col);
-        String symbol =
-                tray
-                        .map(Tray::getSymbol)
-                        .orElse("--");
+        Tray tray = machine.trayDetailsAtPosition(row, col);
+        String symbol = "--";
+        if (tray != null) {
+            symbol = tray.getSymbol();
+        }
         String centeredSymbol = StringUtils.adjustText(symbol, 12);
         System.out.print("|" + centeredSymbol + "|");
     }
 
     /**
      * Metoda wyświetlająca nazwę produktu przechowywanego na tacce. Używa metody z {@link VendingMachine} do pobrania nazwy
-     * produktu. Jest ona zwracana jako {@link Optional}, z którego jest odczytywana ostateczna wartość: w przypadku, gdy
-     * nazwa produktu była dostępna, to jest ona zwracana, natomiast jeżeli nazwa produktu nie istniała, to jest zwracana
-     * domyślna wartość "--".
+     * produktu. Jest ona zwracana jako String, gdy nazwa produktu była dostępna, to jest ona zwracana,
+     * natomiast jeżeli nazwa produktu nie istniała, to jest zwracana domyślna wartość "--".
      * @param row numer wiersza, z którego komórka powinna zostać wyświetlona
      * @param col numer kolumny, z którego komórka powinna zostać wyświetlona
      */
     private void printProductNameForCell(int row, int col) {
-        Optional<String> productName = machine.productNameAtPosition(row, col);
-        String obtainedProductName = productName.orElse("--");
-        String productNameToDisplay = StringUtils.adjustText(obtainedProductName, 12);
+        String productName = machine.productNameAtPosition(row, col);
+        if (productName == null) {
+            productName = "--";
+        }
+        String productNameToDisplay = StringUtils.adjustText(productName, 12);
         System.out.print("|" + productNameToDisplay + "|");
     }
 
     /**
      * Metoda wyświetlająca cenę produktu. Tacka, na której jest nadrukowana cena, jest pobierana z automatu, jednak
-     * ze względu na to, że nie wszystkie tacki muszą być zainstalowane, metoda ta zwraca obiekt {@link Optional}.
-     * Tacka znajdująca się wewnątrz Optionala, musi zostać "przekonwertowana" na cenę - inaczej mówiąc, z obiektu, który
-     * jest w środku Optionala, należy odczytać cenę. Do wykonania tej operacji służy metoda .map, która "mapuje" wartość
-     * w śroku optionala za pomocą przekazanej metody, a jeżeli w środku nie było żadnej wartości, to nie jest wykonywana
-     * żadna operacja.
+     * ze względu na to, że nie wszystkie tacki muszą być zainstalowane, metoda ta może zwracać null.
+     * Z tacki, jeżeli jest dostępna, pobierana jest cena.
      * Ostateczniem zwracana jest odczytana cena produktu lub wartość domyślna 0. Wartości te są konwertowane na tekst
      * oraz centrowane za pomocą metod z klasy {@link StringUtils}
      * @param row numer wiersza, z którego komórka powinna zostać wyświetlona
      * @param col numer kolumny, z którego komórka powinna zostać wyświetlona
      */
     private void printTrayPriceForCell(int row, int col) {
-        Optional<Tray> tray = machine.trayDetailsAtPosition(row, col);
-        Long priceForTray = tray
-                .map((trayInOptional) -> trayInOptional.getPrice())
-                .orElse(0L);
+        Tray tray = machine.trayDetailsAtPosition(row, col);
+        Long priceForTray = 0L;
+        if (tray != null) {
+            priceForTray = tray.getPrice();
+        }
         String formattedMoney = StringUtils.formatMoney(priceForTray);
         String priceToDisplay = StringUtils.adjustText(formattedMoney, 12);
         System.out.print("|" + priceToDisplay + "|");
@@ -173,7 +170,7 @@ public class CustomerOperationController {
      * @param symbol
      * @return
      */
-    public Optional<Product> buyProduct(String symbol) {
+    public Product buyProduct(String symbol) {
         return machine.buyProductWithSymbol(symbol);
     }
 }

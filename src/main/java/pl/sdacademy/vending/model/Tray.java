@@ -1,7 +1,6 @@
 package pl.sdacademy.vending.model;
 
 import java.util.LinkedList;
-import java.util.Optional;
 import java.util.Queue;
 
 /**
@@ -36,14 +35,13 @@ public class Tray {
 
     /**
      * Pobiera nazwę pierwszego produkut, jeżeli ten jest dostępny.
-     * @return nazwa pierwszego produktu lub pusty obiekt {@link Optional}
+     * @return nazwa pierwszego produktu lub placeholder pustej nazwy
      */
-    public Optional<String> firstProductName() {
+    public String firstProductName() {
         // metoda peek pobiera, ale nie usuwa z kolejki pierwszego elementu
         // chcemy tylko dowiedzieć się, jak się produkt nazywa. Przy takiej operacji nie musimy wyciągać produktu
         // z tacki
         Product firstProduct = products.peek();
-        /*
         if (firstProduct == null) {
             return "EMPTY";
         } else {
@@ -54,27 +52,15 @@ public class Tray {
                 return firstProductName;
             }
         }
-
-        Optional<Product> firstProduct1 = Optional.ofNullable(firstProduct);
-        Optional<String> s = Optional.ofNullable(firstProduct)
-                .map(Product::getName);
-        Optional<String> s2 = Optional.ofNullable(firstProduct)
-                .map((srodekPudelka) -> srodekPudelka.getName());
-*/
-        // pobrany produkt konwertujemy na optional. dzięki metodzie ofNullable nie musimy się przejmować potencjalnym
-        // nullem (czyli brakiem produktu). Optional będzie w stanie wykonać "mapowanie" na obiektie null
-        return Optional.ofNullable(firstProduct)
-                .map(Product::getName);
     }
 
     /**
-     * Jeżeli produkt jest dostęny, to metoda ta zwraca go opakowanego w {@link Optional}. W przeciwnym wypadku zwracany
-     * jest pusty obiekt optional
+     * Jeżeli produkt jest dostęny, to metoda ta zwraca go. W przeciwnym wypadku zwracany jest null
      * @return
      */
-    public Optional<Product> getFirstProduct() {
+    public Product getFirstProduct() {
         // operacja poll pobiera wartość z kolejki oraz usuwa ją z tej kolejki (wszystkie elementy przesuwają się  do przodu)
-        return Optional.ofNullable(products.poll());
+        return products.poll();
     }
 
     public static class Builder {

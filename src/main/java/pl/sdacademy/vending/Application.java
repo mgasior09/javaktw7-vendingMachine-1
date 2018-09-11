@@ -6,7 +6,6 @@ import pl.sdacademy.vending.model.VendingMachine;
 import pl.sdacademy.vending.util.Configuration;
 import pl.sdacademy.vending.util.PropertiesFileConfiguration;
 
-import java.util.Optional;
 import java.util.Scanner;
 
 /**
@@ -44,10 +43,11 @@ public class Application {
                 case 1:
                     System.out.print("Select product: ");
                     String selectedSymbol = new Scanner(System.in).nextLine();
-                    Optional<Product> boughtProduct = customerOperationController.buyProduct(selectedSymbol);
-                    String productName = boughtProduct
-                            .map(Product::getName)
-                            .orElse("Sold out");
+                    Product boughtProduct = customerOperationController.buyProduct(selectedSymbol);
+                    String productName = "Sold out";
+                    if (boughtProduct != null) {
+                        productName = boughtProduct.getName();
+                    }
                     System.out.println(productName);
                     break;
                 case 9:
