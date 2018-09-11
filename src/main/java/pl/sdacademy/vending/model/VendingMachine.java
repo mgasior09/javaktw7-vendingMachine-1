@@ -131,12 +131,27 @@ public class VendingMachine {
         return maxColsSize;
     }
 
+    /**
+     * Zwraca obiekt {@link Tray} opakowany w {@link Optional} dla wskazanej pozycji. W przypadku, gdy pod wskazanym
+     * adresem nie ma tacki, zwraca pusty obiekt optional.
+     * @param rowNumber
+     * @param colNumber
+     * @return
+     */
     public Optional<Tray> trayDetailsAtPosition(int rowNumber, int colNumber) {
         Tray obtainedTray = trays[rowNumber][colNumber];
         Optional<Tray> tray = Optional.ofNullable(obtainedTray);
         return tray;
     }
 
+    /**
+     * Pobiera nazwę pierwszego produktu w tacce bez pobierania tego produktu. Zadanie pobrania nazwy produktu jest
+     * oddelegowane do klasy {@link Tray}, która zwraca nazwę produktu jako Optional. Takca może nie posiadać żadnego
+     * produktu, wtedy zwracany jest pusty obiekt optional. W przypadku braku tacki, również zwracany jest pusty optional.
+     * @param rowNumber
+     * @param colNumber
+     * @return
+     */
     public Optional<String> productNameAtPosition(int rowNumber, int colNumber) {
         Tray tray = trays[rowNumber][colNumber];
         if (tray != null) {
@@ -148,6 +163,13 @@ public class VendingMachine {
         }
     }
 
+    /**
+     * Umożliwia pobranie produktu z automatu przez kupującego. Metoda ta aktualnie nie analizuje dostępnych funduszy oraz
+     * ceny produktu. Zamiast tego zwraca pobrany produkt, jeżeli był dostępny. Jeżeli produkt nie był dostępny, to zwraca
+     * pusty obiekt optional.
+     * @param symbol
+     * @return
+     */
     public Optional<Product> buyProductWithSymbol(String symbol) {
         Optional<Tray> trayForSymbol = getTrayForSymbol(symbol);
         if (trayForSymbol.isPresent()) {
@@ -158,6 +180,17 @@ public class VendingMachine {
         }
     }
 
+    /**
+     * Metoda pomocnicza, która pobiera tackę bazując na jej symbolu, a nie na pozycji w automacie.
+     * Przekazany symbol jest rozbijany na dwa znaki: pierwszą literę, będącą symbolem wiersza, oraz drugą liczbę, będącą
+     * symbolem kolumny. Ponieważ pierwszym dostępnym wierszem jest ten, o symbolu 'A', to odejmujemy wartość tego znaku
+     * od pobranego symbolu wiersza, aby otrzymać jego numer indeksowany od 0 (zera) - sprójrz na tablicę ASCII, aby
+     * przypomnieć sobie numerację znaków.
+     * Podobnie postępujemy dla symbolu kolumny, gdzie pierwszą kolumną jest ta o numerze '1', dlatego podczas konwersji
+     * na numer kolumny odejmujemy właśnie ten znak.
+     * @param symbol
+     * @return
+     */
     private Optional<Tray> getTrayForSymbol(String symbol) {
         char rowSymbol = symbol.toUpperCase().charAt(0);
         char colSymbol = symbol.charAt(1);
